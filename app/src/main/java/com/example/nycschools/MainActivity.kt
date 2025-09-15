@@ -11,8 +11,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.nycschools.presentation.company_listing.SchoolListingScreen
 import com.example.nycschools.ui.theme.NYCSchoolsTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +28,23 @@ class MainActivity : ComponentActivity() {
         setContent {
             NYCSchoolsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = "home") {
+                        composable("home") {
+                            SchoolListingScreen(
+                                navController,
+                                modifier = Modifier.padding(innerPadding)
+                            )
+                        }
+
+                        /*composable(
+                            route = "company_info/{symbol}",
+                            arguments = listOf(navArgument("symbol") { type = NavType.StringType })
+                        ) { backStackEntry ->
+                            val symbol = backStackEntry.arguments?.getString("symbol") ?: ""
+                            CompanyInfoScreen(symbol = symbol)
+                        }*/
+                    }
                 }
             }
         }

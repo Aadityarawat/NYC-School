@@ -1,6 +1,6 @@
 package com.example.nycschools.data.remote
 
-import com.example.nycschools.data.remote.Dto.SchoolListingDao
+import com.example.nycschools.data.remote.dto.SchoolListingDao
 import retrofit2.Response
 import retrofit2.http.GET
 

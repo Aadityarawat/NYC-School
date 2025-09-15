@@ -1,4 +1,4 @@
-package com.example.nycschools.data.remote.Dto
+package com.example.nycschools.data.remote.dto
 
 data class SchoolListingDao(
     val academicopportunities1: String,

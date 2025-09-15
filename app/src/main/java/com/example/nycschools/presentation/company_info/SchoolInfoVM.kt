@@ -1,4 +1,4 @@
 package com.example.nycschools.presentation.company_info
 
-class CompanyInfoVM {
+class SchoolInfoVM {
 }
