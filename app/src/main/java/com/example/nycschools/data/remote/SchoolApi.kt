@@ -1,5 +1,6 @@
 package com.example.nycschools.data.remote
 
+import com.example.nycschools.data.remote.Dto.SchoolListingDao
 import retrofit2.Response
 import retrofit2.http.GET
 
@@ -10,5 +11,5 @@ interface SchoolApi {
     }
 
     @GET("resource/s3k6-pzi2.json")
-    suspend fun getSchoolListing(): Response<T>
+    suspend fun getSchoolListing(): Response<List<SchoolListingDao>>
 }
