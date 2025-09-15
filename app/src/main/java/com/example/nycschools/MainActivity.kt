@@ -16,9 +16,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.nycschools.domain.model.SchoolListing
+import com.example.nycschools.presentation.company_info.SchoolInfoScreen
 import com.example.nycschools.presentation.company_listing.SchoolListingScreen
 import com.example.nycschools.ui.theme.NYCSchoolsTheme
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -37,13 +42,17 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        /*composable(
-                            route = "company_info/{symbol}",
-                            arguments = listOf(navArgument("symbol") { type = NavType.StringType })
+                        composable(
+                            route = "school_info_screen/{schoolJson}",
+                            arguments = listOf(navArgument("schoolJson") { type = NavType.StringType })
                         ) { backStackEntry ->
-                            val symbol = backStackEntry.arguments?.getString("symbol") ?: ""
-                            CompanyInfoScreen(symbol = symbol)
-                        }*/
+                            val schoolJson = backStackEntry.arguments?.getString("schoolJson")
+                            val decodedSchoolJson = URLDecoder.decode(schoolJson, StandardCharsets.UTF_8.toString())
+                            val school = Gson().fromJson(decodedSchoolJson, SchoolListing::class.java)
+                            SchoolInfoScreen(school = school,
+                                modifier = Modifier.padding(innerPadding)
+                            )
+                        }
                     }
                 }
             }

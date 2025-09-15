@@ -1,5 +1,6 @@
 package com.example.nycschools.presentation.company_listing
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,6 +23,9 @@ import androidx.navigation.NavHostController
 import com.example.nycschools.R
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.google.gson.Gson
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun SchoolListingScreen(
@@ -36,101 +40,129 @@ fun SchoolListingScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.getSchoolListing(context = context)
+        viewModel.getSchoolListing()
     }
 
-    Column(
+    LaunchedEffect(state.error) {
+        state.error?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Header
-        Text(
-            text = "NYC Schools",
-            style = MaterialTheme.typography.headlineMedium.copy(
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            ),
-            modifier = Modifier.padding(16.dp)
-        )
-
-        SwipeRefresh(
-            state = swipeRefreshState,
-            onRefresh = { viewModel.getSchoolListing(context) }
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 12.dp, vertical = 4.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(state.schools.size) { i ->
-                    val school = state.schools[i]
+            // Header
+            Text(
+                text = "NYC Schools",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier.padding(16.dp)
+            )
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                // navigator.navigate(Screen.SchoolDetailScreen.route)
-                            },
-                        shape = RoundedCornerShape(16.dp),
-                        elevation = CardDefaults.cardElevation(6.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
-                        )
-                    ) {
-                        Row(
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = { viewModel.getSchoolListing() }
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 12.dp, vertical = 4.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(state.schools.size) { i ->
+                        val school = state.schools[i]
+
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                                .clickable {
+                                    val gson = Gson()
+                                    val schoolJson = gson.toJson(school)
+                                    val encodedSchoolJson = URLEncoder.encode(schoolJson, StandardCharsets.UTF_8.toString())
+                                    navigator.navigate("school_info_screen/$encodedSchoolJson")
+                                },
+                            shape = RoundedCornerShape(16.dp),
+                            elevation = CardDefaults.cardElevation(6.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface
+                            )
                         ) {
-                            Box(
+                            Row(
                                 modifier = Modifier
-                                    .size(56.dp)
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-                                contentAlignment = Alignment.Center
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.school),
-                                    contentDescription = null,
-                                    tint = Color.Unspecified
-                                )
-                            }
+                                Box(
+                                    modifier = Modifier
+                                        .size(56.dp)
+                                        .clip(RoundedCornerShape(12.dp))
+                                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.school),
+                                        contentDescription = null,
+                                        tint = Color.Unspecified
+                                    )
+                                }
 
-                            Spacer(modifier = Modifier.width(16.dp))
+                                Spacer(modifier = Modifier.width(16.dp))
 
-                            Column(
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                Text(
-                                    text = school.school_name,
-                                    style = MaterialTheme.typography.titleMedium.copy(
-                                        fontWeight = FontWeight.Bold
-                                    ),
-                                    maxLines = 1
-                                )
-                                Text(
-                                    text = school.school_email ?: "School email is not available",
-                                    style = MaterialTheme.typography.bodySmall.copy(
-                                        color = Color.Gray,
-                                        fontSize = 13.sp
-                                    ),
-                                    maxLines = 1
-                                )
-                                Text(
-                                    text = "Sports: ${school.school_sports ?: "N/A"}",
-                                    style = MaterialTheme.typography.bodySmall.copy(
-                                        color = MaterialTheme.colorScheme.primary
-                                    ),
-                                    maxLines = 1
-                                )
+                                Column(
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text(
+                                        text = school.school_name,
+                                        style = MaterialTheme.typography.titleMedium.copy(
+                                            fontWeight = FontWeight.Bold
+                                        ),
+                                        maxLines = 1
+                                    )
+                                    Text(
+                                        text = school.school_email ?: "School email is not available",
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            color = Color.Gray,
+                                            fontSize = 13.sp
+                                        ),
+                                        maxLines = 1
+                                    )
+                                    Text(
+                                        text = "Sports: ${school.school_sports ?: "N/A"}",
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            color = MaterialTheme.colorScheme.primary
+                                        ),
+                                        maxLines = 1
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
+        // Loader overlay
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.3f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
     }
 }
+

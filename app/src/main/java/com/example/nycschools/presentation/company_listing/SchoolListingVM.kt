@@ -16,19 +16,21 @@ import javax.inject.Inject
 @HiltViewModel
 class SchoolListingVM @Inject constructor(
     private val repository: SchoolRepository
-): ViewModel(){
-    var state by mutableStateOf(SchoolListingState())
+): ViewModel() {
 
-    fun getSchoolListing(context: Context){
+    var state by mutableStateOf(SchoolListingState())
+        private set
+
+    fun getSchoolListing() {
         viewModelScope.launch {
             repository.getSchoolListing()
-                .collect {
-                    when (it) {
+                .collect { result ->
+                    when (result) {
                         is NetworkResult.Error -> {
                             state = state.copy(
-                                isLoading = false
+                                isLoading = false,
+                                error = result.message ?: "Something went wrong"
                             )
-                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
                         }
                         is NetworkResult.Loading -> {
                             state = state.copy(
@@ -37,8 +39,9 @@ class SchoolListingVM @Inject constructor(
                         }
                         is NetworkResult.Success -> {
                             state = state.copy(
-                                schools = it.data!!,
-                                isLoading = false
+                                schools = result.data ?: emptyList(),
+                                isLoading = false,
+                                error = null
                             )
                         }
                     }

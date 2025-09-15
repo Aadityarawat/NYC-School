@@ -74,4 +74,7 @@ dependencies {
     implementation(libs.converter.moshi)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+
+    //GSON
+    implementation (libs.gson)
 }

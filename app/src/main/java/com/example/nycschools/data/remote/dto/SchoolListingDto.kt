@@ -1,6 +1,6 @@
 package com.example.nycschools.data.remote.dto
 
-data class SchoolListingDao(
+data class SchoolListingDto(
     val academicopportunities1: String,
     val academicopportunities2: String,
     val academicopportunities3: String,

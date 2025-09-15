@@ -6,4 +6,5 @@ data class SchoolListingState (
     val schools: List<SchoolListing> = emptyList(),
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
+    val error: String? = null,
 )
