@@ -95,7 +95,7 @@ fun SchoolListingScreen(
                                 Icon(
                                     painter = painterResource(id = R.drawable.school),
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary
+                                    tint = Color.Unspecified
                                 )
                             }
 
