@@ -21,6 +21,10 @@ class SchoolListingVM @Inject constructor(
     var state by mutableStateOf(SchoolListingState())
         private set
 
+    init {
+        getSchoolListing()
+    }
+
     fun getSchoolListing() {
         viewModelScope.launch {
             repository.getSchoolListing()

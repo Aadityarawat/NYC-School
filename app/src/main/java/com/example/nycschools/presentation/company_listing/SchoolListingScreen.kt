@@ -39,10 +39,6 @@ fun SchoolListingScreen(
     val state = viewModel.state
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
-        viewModel.getSchoolListing()
-    }
-
     LaunchedEffect(state.error) {
         state.error?.let { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
