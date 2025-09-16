@@ -1,7 +1,5 @@
 package com.example.nycschools.presentation.company_listing
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
