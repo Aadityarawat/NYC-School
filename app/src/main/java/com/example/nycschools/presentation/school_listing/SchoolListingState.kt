@@ -1,4 +1,4 @@
-package com.example.nycschools.presentation.company_listing
+package com.example.nycschools.presentation.school_listing
 
 import com.example.nycschools.domain.model.SchoolListing
 

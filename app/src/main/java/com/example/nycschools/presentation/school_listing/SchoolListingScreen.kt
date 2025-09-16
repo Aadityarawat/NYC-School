@@ -1,4 +1,4 @@
-package com.example.nycschools.presentation.company_listing
+package com.example.nycschools.presentation.school_listing
 
 import android.widget.Toast
 import androidx.compose.foundation.background

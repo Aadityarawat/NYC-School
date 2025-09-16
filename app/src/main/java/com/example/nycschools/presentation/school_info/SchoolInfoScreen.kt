@@ -1,4 +1,4 @@
-package com.example.nycschools.presentation.company_info
+package com.example.nycschools.presentation.school_info
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

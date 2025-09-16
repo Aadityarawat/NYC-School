@@ -17,8 +17,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.nycschools.domain.model.SchoolListing
-import com.example.nycschools.presentation.company_info.SchoolInfoScreen
-import com.example.nycschools.presentation.company_listing.SchoolListingScreen
+import com.example.nycschools.presentation.school_info.SchoolInfoScreen
+import com.example.nycschools.presentation.school_listing.SchoolListingScreen
 import com.example.nycschools.ui.theme.NYCSchoolsTheme
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
